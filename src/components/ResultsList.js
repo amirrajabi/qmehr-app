@@ -1,17 +1,32 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
-const ResultsList = ({ category, results }) => {
+import { withNavigation } from 'react-navigation';
+import BusinessesDetails from './BusinessesDetails';
+
+const ResultsList = ({ category, results, navigation }) => {
+
+    if (!results.length) {
+        return null;
+    }
+
     return (
-        <View>
+        <View style={styles.container}>
             <Text style={styles.titleStyle}>{category}</Text>
             <FlatList
                 horizontal
+                showsHorizontalScrollIndicator={false}
                 data={results}
                 keyExtractor={(result) => result.id}
                 renderItem={({item}) => {
-                    return <Text>{item.name}</Text>
+                    return (
+                        <TouchableOpacity onPress={() => navigation.navigate('Business', {
+                            id: item.id
+                        })}>
+                            <BusinessesDetails result={item} />
+                        </TouchableOpacity>
+                    )
                 }}
             />
         </View>
@@ -21,8 +36,13 @@ const ResultsList = ({ category, results }) => {
 const styles = StyleSheet.create({
     titleStyle: {
         fontSize: 18,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginLeft: 15,
+        marginBottom: 5
+    },
+    container: {
+        marginBottom: 10
     }
 });
 
-export default ResultsList;
+export default withNavigation(ResultsList);

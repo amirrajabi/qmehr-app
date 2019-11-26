@@ -12,3 +12,6 @@ const XXX = () => {
 const styles = StyleSheet.create({});
 
 export default XXX;
+
+
+//npx expo-cli init blog
